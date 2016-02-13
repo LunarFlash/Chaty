@@ -31,6 +31,12 @@ class ChatViewController: JSQMessagesViewController {
     }
     
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        self.observeMessages()
+    }
+    
+    
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
     }
@@ -101,7 +107,7 @@ class ChatViewController: JSQMessagesViewController {
         
         let itemRef = messageRef.childByAutoId() // Using childByAutoId(), you create a child reference with a unique key.
         // Create a dictionary to represent the message. A [String: AnyObject] works as a JSON-like object
-        let messageItem = ["text": text, senderId: senderId]
+        let messageItem = ["text": text, "senderId": senderId]
         
         itemRef.setValue(messageItem) // Save the value at the new child location.
         
@@ -113,8 +119,37 @@ class ChatViewController: JSQMessagesViewController {
         
     }
     
-    // Observer
-    
+    // Observer logic
+    private func observeMessages () {
+        
+        // Start by creating a query that limits the synchronization to the last 25 messages.
+        let messagesQuery = messageRef.queryLimitedToLast(25)
+        
+        
+        // Use the .ChildAdded event to observe for every child item that has been added, and will be added, at the messages location.
+        messagesQuery.observeEventType(FEventType.ChildAdded) { (snapshot:FDataSnapshot!) -> Void in
+            
+            // Extract the senderId and text from snapshot.value.
+            
+            
+            
+            if let id = snapshot.value["senderId"] as? String, text = snapshot.value["text"] as? String {
+                
+                // Call addMessage() to add the new message to the data source.
+                self.addMessage(id, text: text)
+                
+                // Inform JSQMessagesViewController that a message has been received.
+                self.finishReceivingMessage()
+                
+                
+            }
+            
+            
+            
+        }
+        
+        
+    }
     
     
     
