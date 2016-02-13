@@ -26,6 +26,18 @@ class ChatViewController: JSQMessagesViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        
+        // TEST
+        // messages from someone else
+        addMessage("foo", text: "Hey person!")
+        // messages sent from local sender
+        addMessage(senderId, text: "Yo!")
+        addMessage(senderId, text: "I like turtles!")
+        // animates the receiving of a new message on the view
+        finishReceivingMessage()
+        
+        
+        
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -65,6 +77,14 @@ class ChatViewController: JSQMessagesViewController {
     // remove avatar support and close the gap where the avatars would normally get displayed.
     override func collectionView(collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageAvatarImageDataSource! {
         return nil
+    }
+    
+    
+    // MARK: - Create Message
+    // This helper method creates a new JSQMessage with a blank displayName and adds it to the data source.
+    func addMessage(id: String, text: String) {
+        let message = JSQMessage(senderId: id, displayName: "", text: text)
+        messages.append(message)
     }
     
     
