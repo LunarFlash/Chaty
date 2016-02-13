@@ -74,6 +74,24 @@ class ChatViewController: JSQMessagesViewController {
         }
     }
     
+    // set text color based on who is sending the messages
+    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = super.collectionView(collectionView, cellForItemAtIndexPath: indexPath) as! JSQMessagesCollectionViewCell
+        
+        let message = messages[indexPath.item]
+        
+        if message.senderId == senderId {
+            cell.textView!.textColor = UIColor.whiteColor()
+        } else {
+            cell.textView?.textColor = UIColor.blackColor()
+        }
+        
+        
+        return cell
+    }
+    
+    
+    
     // remove avatar support and close the gap where the avatars would normally get displayed.
     override func collectionView(collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageAvatarImageDataSource! {
         return nil
