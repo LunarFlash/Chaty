@@ -9,14 +9,34 @@ class ChatViewController: JSQMessagesViewController {
     // MARK: Properties
     var messages = [JSQMessage]() // messages is an array to store the various instances of JSQMessage
     
-    
     var outgoingBubbleImageView: JSQMessagesBubbleImage!
     var incomingBubbleImageView: JSQMessagesBubbleImage!
     
-    // Firebase
+    // MARK: Firebase refs
     // In case you’re wondering, creating another reference doesn’t mean you’re creating another connection. Every reference shares the same connection to the same Firebase database.
     let rootRef = Firebase(url: BASE_URL)
     var messageRef = Firebase()
+    var userIsTypingRef: Firebase! // reference that tracks whether the local user is typing
+    var usersTypingQuery: FQuery!  // FQuery, which is just like a Firebase reference, except that it’s ordered by an order function.
+    
+    // Typing tracking related properties
+    private var localTyping = false // Store whether the local user is typing in a private property
+    var isTyping: Bool {
+        get {
+            return localTyping
+        }
+        set {
+            // Using a computed property, update userIsTypingRef each time user updates this property.
+            localTyping = newValue
+            userIsTypingRef.setValue(newValue)
+        }
+    }
+    
+    
+    
+    
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +54,7 @@ class ChatViewController: JSQMessagesViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         self.observeMessages()
+        self.observeTyping()
     }
     
     
@@ -125,13 +146,10 @@ class ChatViewController: JSQMessagesViewController {
         // Start by creating a query that limits the synchronization to the last 25 messages.
         let messagesQuery = messageRef.queryLimitedToLast(25)
         
-        
         // Use the .ChildAdded event to observe for every child item that has been added, and will be added, at the messages location.
         messagesQuery.observeEventType(FEventType.ChildAdded) { (snapshot:FDataSnapshot!) -> Void in
             
             // Extract the senderId and text from snapshot.value.
-            
-            
             
             if let id = snapshot.value["senderId"] as? String, text = snapshot.value["text"] as? String {
                 
@@ -141,13 +159,48 @@ class ChatViewController: JSQMessagesViewController {
                 // Inform JSQMessagesViewController that a message has been received.
                 self.finishReceivingMessage()
                 
-                
             }
-            
-            
             
         }
         
+    }
+    
+    // observer user typing object from Firebase
+    private func observeTyping() {
+        // This method creates a reference to the URL of /typingIndicator, which is where you’ll update the typing status of the user. You don’t want this data to linger around after users have logged out, so you can delete it once the user has left using onDisconnectRemoveValue().
+        
+        let typingIndicatorRef = rootRef.childByAppendingPath("typingIndicator")
+        userIsTypingRef = typingIndicatorRef.childByAppendingPath(senderId)
+        userIsTypingRef.onDisconnectRemoveValue()
+        
+        
+        // initialize the query by retrieving all users who are typing. This is basically saying, “Hey Firebase, go to the key /typingIndicators and get me all users for whom the value is true.”
+        usersTypingQuery = typingIndicatorRef.queryOrderedByValue().queryEqualToValue(true)
+        
+        // Observe for changes using .Value; this will give you an update anytime anything changes.
+        usersTypingQuery.observeEventType(FEventType.Value) { (data:FDataSnapshot!) -> Void in
+            
+            // You're the only typing, don't show the indicator
+            if data.childrenCount == 1 && self.isTyping {
+                return
+            }
+            
+            // Are there others typing?
+            self.showTypingIndicator = data.childrenCount > 0
+            self.scrollToBottomAnimated(true)
+        }
+        
+
+    }
+    
+    
+    
+    // Mark: textView delegate
+    override func textViewDidChange(textView: UITextView) {
+        super.textViewDidChange(textView)
+        
+        // If the text is not empty, the user is typing
+         isTyping = textView.text != ""
         
     }
     
