@@ -13,6 +13,11 @@ class ChatViewController: JSQMessagesViewController {
     var outgoingBubbleImageView: JSQMessagesBubbleImage!
     var incomingBubbleImageView: JSQMessagesBubbleImage!
     
+    // Firebase
+    // In case you’re wondering, creating another reference doesn’t mean you’re creating another connection. Every reference shares the same connection to the same Firebase database.
+    let rootRef = Firebase(url: BASE_URL)
+    var messageRef = Firebase()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Chatyi"
@@ -21,24 +26,10 @@ class ChatViewController: JSQMessagesViewController {
         // No avatars
         collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSizeZero
         collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSizeZero
-        
+    
+        messageRef = rootRef.childByAppendingPath("messages")
     }
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        // TEST
-        // messages from someone else
-        addMessage("foo", text: "Hey person!")
-        // messages sent from local sender
-        addMessage(senderId, text: "Yo!")
-        addMessage(senderId, text: "I like turtles!")
-        // animates the receiving of a new message on the view
-        finishReceivingMessage()
-        
-        
-        
-    }
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
@@ -104,6 +95,26 @@ class ChatViewController: JSQMessagesViewController {
         let message = JSQMessage(senderId: id, displayName: "", text: text)
         messages.append(message)
     }
+    
+    // SEND button pressed
+    override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
+        
+        let itemRef = messageRef.childByAutoId() // Using childByAutoId(), you create a child reference with a unique key.
+        // Create a dictionary to represent the message. A [String: AnyObject] works as a JSON-like object
+        let messageItem = ["text": text, senderId: senderId]
+        
+        itemRef.setValue(messageItem) // Save the value at the new child location.
+        
+        // Play the canonical “message sent” sound.
+        JSQSystemSoundPlayer.jsq_playMessageSentSound()
+        
+        // Complete the “send” action and reset the input toolbar to empty.
+        finishSendingMessage()
+        
+    }
+    
+    // Observer
+    
     
     
     
