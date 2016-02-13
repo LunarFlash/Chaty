@@ -17,6 +17,11 @@ class ChatViewController: JSQMessagesViewController {
         super.viewDidLoad()
         title = "Chatyi"
         setupBubbles()
+        
+        // No avatars
+        collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSizeZero
+        collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSizeZero
+        
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -46,6 +51,24 @@ class ChatViewController: JSQMessagesViewController {
         messageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageData! {
             return messages[indexPath.item]
     }
+    
+    override func collectionView(collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageBubbleImageDataSource! {
+        
+        let message = messages[indexPath.item] // retrieve the message based on the NSIndexPath item.
+        if message.senderId == senderId { // Check if the message was sent by the local user. If so, return the outgoing image view.
+            return outgoingBubbleImageView
+        } else {  // If the message was not sent by the local user, return the incoming image view.
+            return incomingBubbleImageView
+        }
+    }
+    
+    // remove avatar support and close the gap where the avatars would normally get displayed.
+    override func collectionView(collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageAvatarImageDataSource! {
+        return nil
+    }
+    
+    
+    
 }
 
 
