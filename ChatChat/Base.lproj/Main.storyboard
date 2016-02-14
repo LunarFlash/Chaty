@@ -53,7 +53,7 @@
                                 </variation>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" red="0.69803921568627447" green="0.47058823529411764" blue="0.95294117647058818" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.69803921570000005" green="0.47058823529999999" blue="0.95294117649999999" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="edD-sW-bvM" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="2Wj-DK-xEP"/>
                             <constraint firstItem="JIn-ew-tdp" firstAttribute="centerX" secondItem="edD-sW-bvM" secondAttribute="centerX" id="3XE-ia-KTX"/>

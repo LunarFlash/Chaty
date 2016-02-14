@@ -11,6 +11,6 @@ import UIKit
 struct Colors {
     
     static let mainTint = UIColor(red: 178.0/255.0, green: 120.0/255.0, blue: 243.0/255.0, alpha: 1)
-    
+    static let incommingBubbleBackground = UIColor(red: 216.0/255.0, green: 185.0/255.0, blue: 246.0/255.0, alpha: 1)
     
 }
