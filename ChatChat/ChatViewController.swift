@@ -33,12 +33,6 @@ class ChatViewController: JSQMessagesViewController {
         }
     }
     
-    
-    
-    
-    
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Chat"
