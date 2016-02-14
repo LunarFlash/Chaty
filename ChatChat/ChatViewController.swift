@@ -16,6 +16,7 @@ class ChatViewController: JSQMessagesViewController {
     // In case you’re wondering, creating another reference doesn’t mean you’re creating another connection. Every reference shares the same connection to the same Firebase database.
     let rootRef = Firebase(url: BASE_URL)
     var messageRef = Firebase()
+   
     var userIsTypingRef: Firebase! // reference that tracks whether the local user is typing
     var usersTypingQuery: FQuery!  // FQuery, which is just like a Firebase reference, except that it’s ordered by an order function.
     
@@ -60,6 +61,8 @@ class ChatViewController: JSQMessagesViewController {
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
+        
+        messageRef.removeAllObservers()
     }
     
     
