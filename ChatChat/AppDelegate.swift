@@ -1,5 +1,6 @@
 /*
 http://www.raywenderlich.com/122148/firebase-tutorial-real-time-chat
+https://www.firebase.com/blog/2015-10-15-best-practices-uiviewcontroller-ios-firebase.html
 */
 
 import UIKit
