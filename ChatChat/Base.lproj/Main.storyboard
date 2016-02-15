@@ -37,7 +37,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Chaty" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="edD-sW-bvM">
-                                <rect key="frame" x="173.5" y="106" width="253" height="137"/>
+                                <rect key="frame" x="174" y="106" width="253" height="137"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="197" id="eS4-pG-wqb"/>
                                     <constraint firstAttribute="height" constant="50" id="s2r-hE-NNb"/>
@@ -69,10 +69,10 @@
             </objects>
             <point key="canvasLocation" x="305" y="389"/>
         </scene>
-        <!--ChatChat-->
+        <!--Chaty-->
         <scene sceneID="b7U-kW-Qaq">
             <objects>
-                <viewController title="ChatChat" id="5z3-67-Woy" customClass="ChatViewController" customModule="ChatChat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Chaty" id="5z3-67-Woy" customClass="ChatViewController" customModule="ChatChat" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="3hD-Iu-d73"/>
                         <viewControllerLayoutGuide type="bottom" id="ZWp-Ez-oci"/>
