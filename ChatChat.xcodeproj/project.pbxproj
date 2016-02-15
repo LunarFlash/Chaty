@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2AF39E3FEABCC02EE9A58124 /* Pods_ChatChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 172A997B717F5594C28CF57E /* Pods_ChatChat.framework */; };
+		9C292DF01C7159D300E65061 /* Simulator Screen Shot Feb 14, 2016, 7.55.26 PM.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C292DEF1C7159D300E65061 /* Simulator Screen Shot Feb 14, 2016, 7.55.26 PM.png */; };
 		9C8790A71C6FD72E0070C46A /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C8790A61C6FD72E0070C46A /* Colors.swift */; };
 		9C8790AA1C7015E70070C46A /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C8790A91C7015E70070C46A /* logo.png */; };
 		9C8790AC1C7015EE0070C46A /* logo.ai in Resources */ = {isa = PBXBuildFile; fileRef = 9C8790AB1C7015EE0070C46A /* logo.ai */; };
@@ -24,6 +25,7 @@
 /* Begin PBXFileReference section */
 		172A997B717F5594C28CF57E /* Pods_ChatChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ChatChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		579E6D00E51046B5041AD474 /* Pods-ChatChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatChat.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ChatChat/Pods-ChatChat.debug.xcconfig"; sourceTree = "<group>"; };
+		9C292DEF1C7159D300E65061 /* Simulator Screen Shot Feb 14, 2016, 7.55.26 PM.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Simulator Screen Shot Feb 14, 2016, 7.55.26 PM.png"; sourceTree = "<group>"; };
 		9C8790A61C6FD72E0070C46A /* Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		9C8790A91C7015E70070C46A /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
 		9C8790AB1C7015EE0070C46A /* logo.ai */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = logo.ai; sourceTree = "<group>"; };
@@ -73,9 +75,18 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		9C292DEE1C7159C800E65061 /* Screenshots */ = {
+			isa = PBXGroup;
+			children = (
+				9C292DEF1C7159D300E65061 /* Simulator Screen Shot Feb 14, 2016, 7.55.26 PM.png */,
+			);
+			name = Screenshots;
+			sourceTree = "<group>";
+		};
 		9C8790A81C7015CB0070C46A /* Design Files */ = {
 			isa = PBXGroup;
 			children = (
+				9C292DEE1C7159C800E65061 /* Screenshots */,
 				9C8790AB1C7015EE0070C46A /* logo.ai */,
 				9C8790A91C7015E70070C46A /* logo.png */,
 			);
@@ -213,6 +224,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C292DF01C7159D300E65061 /* Simulator Screen Shot Feb 14, 2016, 7.55.26 PM.png in Resources */,
 				9C8790AA1C7015E70070C46A /* logo.png in Resources */,
 				BB5355841BEF765800321277 /* LaunchScreen.storyboard in Resources */,
 				9C8790AC1C7015EE0070C46A /* logo.ai in Resources */,
