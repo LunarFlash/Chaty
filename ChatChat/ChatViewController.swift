@@ -64,7 +64,7 @@ class ChatViewController: JSQMessagesViewController {
         // JSQMessagesBubbleImageFactory has methods that create the images for the chat bubbles. There’s even a category provided by JSQMessagesViewController that creates the message bubble colors used in the native Messages app.
         let factory = JSQMessagesBubbleImageFactory()
         outgoingBubbleImageView = factory.outgoingMessagesBubbleImageWithColor(UIColor.jsq_messageBubbleBlueColor())
-        incomingBubbleImageView = factory.incomingMessagesBubbleImageWithColor(Colors.incommingBubbleBackground)
+        incomingBubbleImageView = factory.incomingMessagesBubbleImageWithColor(UIColor.jsq_messageBubbleLightGrayColor())
     }
     
 
