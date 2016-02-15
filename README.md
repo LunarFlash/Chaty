@@ -7,3 +7,8 @@ This app demonstrates how a powerful chat app can be made without any backend co
 
 
 ![](https://github.com/LunarFlash/Chaty/blob/master/ChatChat/Simulator%20Screen%20Shot%20Feb%2014%2C%202016%2C%207.55.26%20PM.png)
+
+**Setup**
+
+Goto Firebase.com to register for a free account and create your own database instance. 
+In Constants.swift , change the BASE_URL property to point to your own instance.
