@@ -6,7 +6,8 @@ Firebase is Google's real time NoSQL Backend as a Service (BaaS) platform that c
 This app demonstrates how a powerful chat app can be made without any backend code. 
 
 
-![](https://github.com/LunarFlash/Chaty/blob/master/ChatChat/Simulator%20Screen%20Shot%20Feb%2014%2C%202016%2C%207.55.26%20PM.png)
+![screen 1](https://github.com/LunarFlash/Chaty/blob/master/ChatChat/screen1.png)
+![screen 2](https://github.com/LunarFlash/Chaty/blob/master/ChatChat/screen2.png)
 
 **Setup**
 
