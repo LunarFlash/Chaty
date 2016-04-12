@@ -3,7 +3,7 @@ platform :ios, '9.0'
 # Uncomment this line if you're using Swift
 use_frameworks!
 
-target 'ChatChat' do
+target 'Chaty' do
  pod 'Firebase'
  pod 'JSQMessagesViewController'
 end
