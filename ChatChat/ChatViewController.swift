@@ -21,7 +21,7 @@ class ChatViewController: JSQMessagesViewController {
     var usersTypingQuery: FQuery!  // FQuery, which is just like a Firebase reference, except that it’s ordered by an order function.
     
     // Typing tracking related properties
-    private var localTyping = false // Store whether the local user is typing in a private property
+    fileprivate var localTyping = false // Store whether the local user is typing in a private property
     var isTyping: Bool {
         get {
             return localTyping
@@ -39,47 +39,47 @@ class ChatViewController: JSQMessagesViewController {
         setupBubbles()
         
         // No avatars
-        collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSizeZero
-        collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSizeZero
+        collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSize.zero
+        collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSize.zero
     
-        messageRef = rootRef.childByAppendingPath("messages")
+        messageRef = (rootRef?.child(byAppendingPath: "messages"))!
     }
     
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.observeMessages()
         self.observeTyping()
     }
     
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
         messageRef.removeAllObservers()
     }
     
     
-    private func setupBubbles() {
+    fileprivate func setupBubbles() {
         // JSQMessagesBubbleImageFactory has methods that create the images for the chat bubbles. There’s even a category provided by JSQMessagesViewController that creates the message bubble colors used in the native Messages app.
         let factory = JSQMessagesBubbleImageFactory()
-        outgoingBubbleImageView = factory.outgoingMessagesBubbleImageWithColor(UIColor.jsq_messageBubbleBlueColor())
-        incomingBubbleImageView = factory.incomingMessagesBubbleImageWithColor(UIColor.jsq_messageBubbleLightGrayColor())
+        outgoingBubbleImageView = factory?.outgoingMessagesBubbleImage(with: UIColor.jsq_messageBubbleBlue())
+        incomingBubbleImageView = factory?.incomingMessagesBubbleImage(with: UIColor.jsq_messageBubbleLightGray())
     }
     
 
     // MARK: JSQMessagesCollectionView Datasource    
-    override func collectionView(collectionView: UICollectionView,
+    override func collectionView(_ collectionView: UICollectionView,
         numberOfItemsInSection section: Int) -> Int {
             return messages.count
     }
     
-    override func collectionView(collectionView: JSQMessagesCollectionView!,
-        messageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageData! {
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!,
+        messageDataForItemAt indexPath: IndexPath!) -> JSQMessageData! {
             return messages[indexPath.item]
     }
     
-    override func collectionView(collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageBubbleImageDataSource! {
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAt indexPath: IndexPath!) -> JSQMessageBubbleImageDataSource! {
         
         let message = messages[indexPath.item] // retrieve the message based on the NSIndexPath item.
         if message.senderId == senderId { // Check if the message was sent by the local user. If so, return the outgoing image view.
@@ -90,15 +90,15 @@ class ChatViewController: JSQMessagesViewController {
     }
     
     // set text color based on who is sending the messages
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = super.collectionView(collectionView, cellForItemAtIndexPath: indexPath) as! JSQMessagesCollectionViewCell
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = super.collectionView(collectionView, cellForItemAt: indexPath) as! JSQMessagesCollectionViewCell
         
-        let message = messages[indexPath.item]
+        let message = messages[(indexPath as NSIndexPath).item]
         
         if message.senderId == senderId {
-            cell.textView!.textColor = UIColor.whiteColor()
+            cell.textView!.textColor = UIColor.white
         } else {
-            cell.textView?.textColor = UIColor.blackColor()
+            cell.textView?.textColor = UIColor.black
         }
         
         
@@ -108,26 +108,26 @@ class ChatViewController: JSQMessagesViewController {
     
     
     // remove avatar support and close the gap where the avatars would normally get displayed.
-    override func collectionView(collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageAvatarImageDataSource! {
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAt indexPath: IndexPath!) -> JSQMessageAvatarImageDataSource! {
         return nil
     }
     
     
     // MARK: - Create Message
     // This helper method creates a new JSQMessage with a blank displayName and adds it to the data source.
-    func addMessage(id: String, text: String) {
+    func addMessage(_ id: String, text: String) {
         let message = JSQMessage(senderId: id, displayName: "", text: text)
-        messages.append(message)
+        messages.append(message!)
     }
     
     // SEND button pressed
-    override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
+    override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!) {
         
         let itemRef = messageRef.childByAutoId() // Using childByAutoId(), you create a child reference with a unique key.
         // Create a dictionary to represent the message. A [String: AnyObject] works as a JSON-like object
-        let messageItem = ["text": text, "senderId": senderId]
+        let messageItem = ["text": text as NSString, "senderId": senderId as NSString]
         
-        itemRef.setValue(messageItem) // Save the value at the new child location.
+        itemRef?.setValue(messageItem) // Save the value at the new child location.
         
         // Play the canonical “message sent” sound.
         JSQSystemSoundPlayer.jsq_playMessageSentSound()
@@ -138,18 +138,16 @@ class ChatViewController: JSQMessagesViewController {
     }
     
     // Observer logic
-    private func observeMessages () {
+    fileprivate func observeMessages () {
         
         // Start by creating a query that limits the synchronization to the last 25 messages.
-        let messagesQuery = messageRef.queryLimitedToLast(25)
+        let messagesQuery = messageRef.queryLimited(toLast: 25)
         
         // Use the .ChildAdded event to observe for every child item that has been added, and will be added, at the messages location.
-        messagesQuery.observeEventType(FEventType.ChildAdded) { (snapshot:FDataSnapshot!) -> Void in
+        messagesQuery?.observe(.childAdded, with: { (snapshot:FDataSnapshot?) -> Void in
             
             // Extract the senderId and text from snapshot.value.
-            
-            if let id = snapshot.value["senderId"] as? String, text = snapshot.value["text"] as? String {
-                
+            if let id = snapshot?.childSnapshot(forPath: "senderId").value as? String, let text = snapshot?.childSnapshot(forPath: "text").value as? String {
                 // Call addMessage() to add the new message to the data source.
                 self.addMessage(id, text: text)
                 
@@ -158,34 +156,34 @@ class ChatViewController: JSQMessagesViewController {
                 
             }
             
-        }
+        })
         
     }
     
     // observer user typing object from Firebase
-    private func observeTyping() {
+    fileprivate func observeTyping() {
         // This method creates a reference to the URL of /typingIndicator, which is where you’ll update the typing status of the user. You don’t want this data to linger around after users have logged out, so you can delete it once the user has left using onDisconnectRemoveValue().
         
-        let typingIndicatorRef = rootRef.childByAppendingPath("typingIndicator")
-        userIsTypingRef = typingIndicatorRef.childByAppendingPath(senderId)
+        let typingIndicatorRef = rootRef?.child(byAppendingPath: "typingIndicator")
+        userIsTypingRef = typingIndicatorRef?.child(byAppendingPath: senderId)
         userIsTypingRef.onDisconnectRemoveValue()
         
         
         // initialize the query by retrieving all users who are typing. This is basically saying, “Hey Firebase, go to the key /typingIndicators and get me all users for whom the value is true.”
-        usersTypingQuery = typingIndicatorRef.queryOrderedByValue().queryEqualToValue(true)
+        usersTypingQuery = typingIndicatorRef?.queryOrderedByValue().queryEqual(toValue: true)
         
         // Observe for changes using .Value; this will give you an update anytime anything changes.
-        usersTypingQuery.observeEventType(FEventType.Value) { (data:FDataSnapshot!) -> Void in
+        usersTypingQuery.observe(FEventType.value, with: { (data:FDataSnapshot?) -> Void in
             
             // You're the only typing, don't show the indicator
-            if data.childrenCount == 1 && self.isTyping {
+            if data?.childrenCount == 1 && self.isTyping {
                 return
             }
             
             // Are there others typing?
-            self.showTypingIndicator = data.childrenCount > 0
-            self.scrollToBottomAnimated(true)
-        }
+            self.showTypingIndicator = (data?.childrenCount)! > 0
+            self.scrollToBottom(animated: true)
+        })
         
 
     }
@@ -193,7 +191,7 @@ class ChatViewController: JSQMessagesViewController {
     
     
     // Mark: textView delegate
-    override func textViewDidChange(textView: UITextView) {
+    override func textViewDidChange(_ textView: UITextView) {
         super.textViewDidChange(textView)
         
         // If the text is not empty, the user is typing
